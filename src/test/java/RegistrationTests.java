@@ -3,6 +3,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
@@ -84,6 +87,34 @@ public class RegistrationTests {
                 .shouldHave(text("221B Baker Street"));
         $$(".table-responsive tbody tr").findBy(text("State and City"))
                 .shouldHave(text("NCR Delhi"));
+    }
+
+    @Test
+    void successfulRequiredFillFormTest() {
+        open("/automation-practice-form");
+
+        // ---- Personal info ----
+        $("[id=firstName]").setValue("Harry");
+        $("[id=lastName]").setValue("Potter");
+        $("[id=userNumber]").setValue("8005553535");
+
+        // ---- Gender ----
+        $("label[for='gender-radio-2']").click(); // Female
+
+        // ---- Submit ----
+        $("[id=submit]").click();
+
+        // ---- Verify result modal ----
+        $(".modal-title").shouldHave(text("Thanks for submitting the form"));
+        $$(".table-responsive tbody tr").findBy(text("Student Name"))
+                .shouldHave(text("Harry Potter"));
+        $$(".table-responsive tbody tr").findBy(text("Gender"))
+                .shouldHave(text("Female"));
+        $$(".table-responsive tbody tr").findBy(text("Mobile"))
+                .shouldHave(text("8005553535"));
+        $$(".table-responsive tbody tr").findBy(text("Date of Birth"))
+                .shouldHave(text(LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM,yyyy", Locale.ENGLISH))));
+
     }
 
 }
