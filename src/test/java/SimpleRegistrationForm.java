@@ -42,4 +42,22 @@ public class SimpleRegistrationForm extends TestBase {
         $("#output .border").shouldNot(exist);
         $("[id=userEmail]").shouldHave(cssClass("field-error"));
     }
+
+    @Test
+    void invalidEmailWithSpacesTest() {
+        open("/text-box");
+
+        // ---- Ввод email с пробелом ----
+        $("[id=userName]").setValue("Ivanov Ivan Ivanovich");
+        $("[id=userEmail]").setValue("og @vanya.ru");
+        $("[id=currentAddress]").setValue("35 Marshal Rybalko Street, Perm, Russia");
+        $("[id=permanentAddress]").setValue("27 Lenin Street, Moscow, Russia");
+
+        // ---- Отправка формы ----
+        $("[id=submit]").click();
+
+        // ---- Проверка: введённые значения внизу не отобразились, поле email подсвечено красным ----
+        $("#output .border").shouldNot(exist);
+        $("[id=userEmail]").shouldHave(cssClass("field-error"));
+    }
 }

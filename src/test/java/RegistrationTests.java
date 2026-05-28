@@ -1,11 +1,11 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class RegistrationTests extends TestBase {
@@ -21,7 +21,7 @@ public class RegistrationTests extends TestBase {
         $("[id=userNumber]").setValue("8800555353");
 
         // ---- Пол ----
-        $("label[for='gender-radio-1']").click(); // Мужской
+        $("#genterWrapper").$$("label").findBy(text("Male")).click(); // Мужской
 
         // ---- Дата рождения ----
         $("[id=dateOfBirthInput]").click();
@@ -34,12 +34,12 @@ public class RegistrationTests extends TestBase {
         $(".subjects-auto-complete__option").click();
 
         // ---- Хобби ----
-        $("label[for='hobbies-checkbox-1']").click(); // Спорт
-        $("label[for='hobbies-checkbox-2']").click(); // Чтение
-        $("label[for='hobbies-checkbox-3']").click(); // Музыка
+        $("#hobbiesWrapper").$$("label").findBy(text("Sports")).click(); // Спорт
+        $("#hobbiesWrapper").$$("label").findBy(text("Reading")).click(); // Чтение
+        $("#hobbiesWrapper").$$("label").findBy(text("Music")).click(); // Музыка
 
         // ---- Загрузка фото ----
-        $("[id=uploadPicture]").uploadFile(new File("src/test/resources/CatHarry.jpg"));
+        $("[id=uploadPicture]").uploadFromClasspath("CatHarry.jpg");
 
         // ---- Текущий адрес ----
         $("[id=currentAddress]").setValue("221B Baker Street");
@@ -57,25 +57,25 @@ public class RegistrationTests extends TestBase {
         // ---- Проверка модального окна ----
         $(".modal-title").shouldHave(text("Thanks for submitting the form"));
 
-        $$(".table-responsive tbody tr").findBy(text("Student Name"))
+        $(".table-responsive").$(byText("Student Name")).parent()
                 .shouldHave(text("Harry Potter"));
-        $$(".table-responsive tbody tr").findBy(text("Student Email"))
+        $(".table-responsive").$(byText("Student Email")).parent()
                 .shouldHave(text("og@potter.com"));
-        $$(".table-responsive tbody tr").findBy(text("Gender"))
+        $(".table-responsive").$(byText("Gender")).parent()
                 .shouldHave(text("Male"));
-        $$(".table-responsive tbody tr").findBy(text("Mobile"))
+        $(".table-responsive").$(byText("Mobile")).parent()
                 .shouldHave(text("8800555353"));
-        $$(".table-responsive tbody tr").findBy(text("Date of Birth"))
+        $(".table-responsive").$(byText("Date of Birth")).parent()
                 .shouldHave(text("01 January,2000"));
-        $$(".table-responsive tbody tr").findBy(text("Subjects"))
+        $(".table-responsive").$(byText("Subjects")).parent()
                 .shouldHave(text("Maths"));
-        $$(".table-responsive tbody tr").findBy(text("Hobbies"))
+        $(".table-responsive").$(byText("Hobbies")).parent()
                 .shouldHave(text("Sports, Reading, Music"));
-        $$(".table-responsive tbody tr").findBy(text("Picture"))
+        $(".table-responsive").$(byText("Picture")).parent()
                 .shouldHave(text("CatHarry.jpg"));
-        $$(".table-responsive tbody tr").findBy(text("Address"))
+        $(".table-responsive").$(byText("Address")).parent()
                 .shouldHave(text("221B Baker Street"));
-        $$(".table-responsive tbody tr").findBy(text("State and City"))
+        $(".table-responsive").$(byText("State and City")).parent()
                 .shouldHave(text("NCR Delhi"));
     }
 
@@ -90,20 +90,20 @@ public class RegistrationTests extends TestBase {
         $("[id=userNumber]").setValue("8005553535");
 
         // ---- Пол ----
-        $("label[for='gender-radio-2']").click(); // Женский
+        $("#genterWrapper").$$("label").findBy(text("Female")).click(); // Женский
 
         // ---- Отправка формы ----
         $("[id=submit]").click();
 
         // ---- Проверка модального окна ----
         $(".modal-title").shouldHave(text("Thanks for submitting the form"));
-        $$(".table-responsive tbody tr").findBy(text("Student Name"))
+        $(".table-responsive").$(byText("Student Name")).parent()
                 .shouldHave(text("Harry Potter"));
-        $$(".table-responsive tbody tr").findBy(text("Gender"))
+        $(".table-responsive").$(byText("Gender")).parent()
                 .shouldHave(text("Female"));
-        $$(".table-responsive tbody tr").findBy(text("Mobile"))
+        $(".table-responsive").$(byText("Mobile")).parent()
                 .shouldHave(text("8005553535"));
-        $$(".table-responsive tbody tr").findBy(text("Date of Birth"))
+        $(".table-responsive").$(byText("Date of Birth")).parent()
                 .shouldHave(text(LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM,yyyy", Locale.ENGLISH))));
     }
 
@@ -130,7 +130,7 @@ public class RegistrationTests extends TestBase {
         // ---- Заполнение всех обязательных полей, кроме имени ----
         $("[id=lastName]").setValue("Potter");
         $("[id=userNumber]").setValue("8800555353");
-        $("label[for='gender-radio-1']").click();
+        $("#genterWrapper").$$("label").findBy(text("Male")).click();
 
         // ---- Отправка формы ----
         $("[id=submit]").click();
@@ -147,7 +147,7 @@ public class RegistrationTests extends TestBase {
         // ---- Заполнение всех обязательных полей, кроме фамилии ----
         $("[id=firstName]").setValue("Harry");
         $("[id=userNumber]").setValue("8800555353");
-        $("label[for='gender-radio-1']").click();
+        $("#genterWrapper").$$("label").findBy(text("Male")).click();
 
         // ---- Отправка формы ----
         $("[id=submit]").click();
@@ -171,9 +171,12 @@ public class RegistrationTests extends TestBase {
 
         // ---- Проверка: модальное окно не появилось, лейблы гендера подсвечены красным ----
         $(".modal-body").shouldNot(exist);
-        $("label[for='gender-radio-1']").shouldHave(cssValue("color", "rgba(220, 53, 69, 1)"));
-        $("label[for='gender-radio-2']").shouldHave(cssValue("color", "rgba(220, 53, 69, 1)"));
-        $("label[for='gender-radio-3']").shouldHave(cssValue("color", "rgba(220, 53, 69, 1)"));
+        $("#genterWrapper").$$("label").findBy(text("Male"))
+                .shouldHave(cssValue("color", "rgba(220, 53, 69, 1)"));
+        $("#genterWrapper").$$("label").findBy(text("Female"))
+                .shouldHave(cssValue("color", "rgba(220, 53, 69, 1)"));
+        $("#genterWrapper").$$("label").findBy(text("Other"))
+                .shouldHave(cssValue("color", "rgba(220, 53, 69, 1)"));
     }
 
     @Test
@@ -185,7 +188,7 @@ public class RegistrationTests extends TestBase {
         $("[id=lastName]").setValue("Potter");
         $("[id=userEmail]").setValue("not-an-email");
         $("[id=userNumber]").setValue("8800555353");
-        $("label[for='gender-radio-1']").click();
+        $("#genterWrapper").$$("label").findBy(text("Male")).click();
 
         // ---- Отправка формы ----
         $("[id=submit]").click();
