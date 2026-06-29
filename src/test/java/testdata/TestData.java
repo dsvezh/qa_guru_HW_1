@@ -35,9 +35,10 @@ public class TestData {
     public static final String REG_MALE_GENDER = "Male";
     public static final String REG_FEMALE_GENDER = "Female";
     public static final String REG_OTHER_GENDER = "Other";
+    public static final String REG_BIRTH_DAY = "01";
     public static final String REG_BIRTH_MONTH = "January";
     public static final String REG_BIRTH_YEAR = "2000";
-    public static final String REG_EXPECTED_BIRTH_DATE = "01 January,2000";
+    public static final String REG_EXPECTED_BIRTH_DATE = REG_BIRTH_DAY + " January,2000";
     public static final String REG_EXPECTED_DEFAULT_BIRTH_DATE =
             LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM,yyyy", Locale.ENGLISH));
     public static final String REG_SUBJECT_INPUT = "Math";

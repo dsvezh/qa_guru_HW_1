@@ -18,19 +18,19 @@ public class RegistrationTests extends TestBase {
         $("[id=userEmail]").setValue(REG_EMAIL);
         $("[id=userNumber]").setValue(REG_MOBILE);
 
-        $("#genterWrapper").$$("label").findBy(text(REG_MALE_GENDER)).click();
+        $("#genterWrapper").$(byText(REG_MALE_GENDER)).click();
 
         $("[id=dateOfBirthInput]").click();
         $(".react-datepicker__month-select").selectOption(REG_BIRTH_MONTH);
         $(".react-datepicker__year-select").selectOption(REG_BIRTH_YEAR);
-        $(".react-datepicker__day--001:not(.react-datepicker__day--outside-month)").click();
+        $(".react-datepicker__day--0" + REG_BIRTH_DAY + ":not(.react-datepicker__day--outside-month)").click();
 
         $("[id=subjectsInput]").setValue(REG_SUBJECT_INPUT);
         $(".subjects-auto-complete__option").click();
 
-        $("#hobbiesWrapper").$$("label").findBy(text(REG_HOBBY_SPORTS)).click();
-        $("#hobbiesWrapper").$$("label").findBy(text(REG_HOBBY_READING)).click();
-        $("#hobbiesWrapper").$$("label").findBy(text(REG_HOBBY_MUSIC)).click();
+        $("#hobbiesWrapper").$(byText(REG_HOBBY_SPORTS)).click();
+        $("#hobbiesWrapper").$(byText(REG_HOBBY_READING)).click();
+        $("#hobbiesWrapper").$(byText(REG_HOBBY_MUSIC)).click();
 
         $("[id=uploadPicture]").uploadFromClasspath(REG_PICTURE_NAME);
 
@@ -76,7 +76,7 @@ public class RegistrationTests extends TestBase {
         $("[id=lastName]").setValue(REG_LAST_NAME);
         $("[id=userNumber]").setValue(REG_REQUIRED_MOBILE);
 
-        $("#genterWrapper").$$("label").findBy(text(REG_FEMALE_GENDER)).click();
+        $("#genterWrapper").$(byText(REG_FEMALE_GENDER)).click();
 
         $("[id=submit]").click();
 
@@ -109,7 +109,7 @@ public class RegistrationTests extends TestBase {
 
         $("[id=lastName]").setValue(REG_LAST_NAME);
         $("[id=userNumber]").setValue(REG_MOBILE);
-        $("#genterWrapper").$$("label").findBy(text(REG_MALE_GENDER)).click();
+        $("#genterWrapper").$(byText(REG_MALE_GENDER)).click();
 
         $("[id=submit]").click();
 
@@ -123,7 +123,7 @@ public class RegistrationTests extends TestBase {
 
         $("[id=firstName]").setValue(REG_FIRST_NAME);
         $("[id=userNumber]").setValue(REG_MOBILE);
-        $("#genterWrapper").$$("label").findBy(text(REG_MALE_GENDER)).click();
+        $("#genterWrapper").$(byText(REG_MALE_GENDER)).click();
 
         $("[id=submit]").click();
 
@@ -142,11 +142,11 @@ public class RegistrationTests extends TestBase {
         $("[id=submit]").click();
 
         $(".modal-body").shouldNot(exist);
-        $("#genterWrapper").$$("label").findBy(text(REG_MALE_GENDER))
+        $("#genterWrapper").$(byText(REG_MALE_GENDER))
                 .shouldHave(cssValue("color", ERROR_GENDER_COLOR));
-        $("#genterWrapper").$$("label").findBy(text(REG_FEMALE_GENDER))
+        $("#genterWrapper").$(byText(REG_FEMALE_GENDER))
                 .shouldHave(cssValue("color", ERROR_GENDER_COLOR));
-        $("#genterWrapper").$$("label").findBy(text(REG_OTHER_GENDER))
+        $("#genterWrapper").$(byText(REG_OTHER_GENDER))
                 .shouldHave(cssValue("color", ERROR_GENDER_COLOR));
     }
 
@@ -158,7 +158,7 @@ public class RegistrationTests extends TestBase {
         $("[id=lastName]").setValue(REG_LAST_NAME);
         $("[id=userEmail]").setValue(REG_INVALID_EMAIL);
         $("[id=userNumber]").setValue(REG_MOBILE);
-        $("#genterWrapper").$$("label").findBy(text(REG_MALE_GENDER)).click();
+        $("#genterWrapper").$(byText(REG_MALE_GENDER)).click();
 
         $("[id=submit]").click();
 
