@@ -1,57 +1,49 @@
 package tests;
 
 import org.junit.jupiter.api.Test;
+import pages.TextBoxPage;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
 import static testdata.TestData.*;
 
 public class SimpleRegistrationForm extends TestBase {
 
+    TextBoxPage textBoxPage = new TextBoxPage();
+
     @Test
     void successfulFullFillFormTest() {
-        open(TEXT_BOX_URL);
-
-        $("[id=userName]").setValue(TEXT_BOX_FULL_NAME);
-        $("[id=userEmail]").setValue(TEXT_BOX_EMAIL);
-        $("[id=currentAddress]").setValue(TEXT_BOX_CURRENT_ADDRESS);
-        $("[id=permanentAddress]").setValue(TEXT_BOX_PERMANENT_ADDRESS);
-
-        $("[id=submit]").click();
-
-        $("#output #name").shouldHave(text(TEXT_BOX_FULL_NAME));
-        $("#output #email").shouldHave(text(TEXT_BOX_EMAIL));
-        $("#output #currentAddress").shouldHave(text(TEXT_BOX_CURRENT_ADDRESS));
-        $("#output #permanentAddress").shouldHave(text(TEXT_BOX_PERMANENT_ADDRESS));
+        textBoxPage.openPage(TEXT_BOX_URL)
+                .setFullName(TEXT_BOX_FULL_NAME)
+                .setEmail(TEXT_BOX_EMAIL)
+                .setCurrentAddress(TEXT_BOX_CURRENT_ADDRESS)
+                .setPermanentAddress(TEXT_BOX_PERMANENT_ADDRESS)
+                .submit()
+                .checkOutputFullName(TEXT_BOX_FULL_NAME)
+                .checkOutputEmail(TEXT_BOX_EMAIL)
+                .checkOutputCurrentAddress(TEXT_BOX_CURRENT_ADDRESS)
+                .checkOutputPermanentAddress(TEXT_BOX_PERMANENT_ADDRESS);
     }
 
     @Test
     void invalidEmailTest() {
-        open(TEXT_BOX_URL);
-
-        $("[id=userName]").setValue(TEXT_BOX_FULL_NAME);
-        $("[id=userEmail]").setValue(TEXT_BOX_INVALID_EMAIL);
-        $("[id=currentAddress]").setValue(TEXT_BOX_CURRENT_ADDRESS);
-        $("[id=permanentAddress]").setValue(TEXT_BOX_PERMANENT_ADDRESS);
-
-        $("[id=submit]").click();
-
-        $("#output .border").shouldNot(exist);
-        $("[id=userEmail]").shouldHave(cssClass(FIELD_ERROR_CLASS));
+        textBoxPage.openPage(TEXT_BOX_URL)
+                .setFullName(TEXT_BOX_FULL_NAME)
+                .setEmail(TEXT_BOX_INVALID_EMAIL)
+                .setCurrentAddress(TEXT_BOX_CURRENT_ADDRESS)
+                .setPermanentAddress(TEXT_BOX_PERMANENT_ADDRESS)
+                .submit()
+                .checkOutputIsNotVisible()
+                .checkEmailHasErrorClass(FIELD_ERROR_CLASS);
     }
 
     @Test
     void invalidEmailWithSpacesTest() {
-        open(TEXT_BOX_URL);
-
-        $("[id=userName]").setValue(TEXT_BOX_FULL_NAME);
-        $("[id=userEmail]").setValue(TEXT_BOX_INVALID_EMAIL_WITH_SPACES);
-        $("[id=currentAddress]").setValue(TEXT_BOX_CURRENT_ADDRESS);
-        $("[id=permanentAddress]").setValue(TEXT_BOX_PERMANENT_ADDRESS);
-
-        $("[id=submit]").click();
-
-        $("#output .border").shouldNot(exist);
-        $("[id=userEmail]").shouldHave(cssClass(FIELD_ERROR_CLASS));
+        textBoxPage.openPage(TEXT_BOX_URL)
+                .setFullName(TEXT_BOX_FULL_NAME)
+                .setEmail(TEXT_BOX_INVALID_EMAIL_WITH_SPACES)
+                .setCurrentAddress(TEXT_BOX_CURRENT_ADDRESS)
+                .setPermanentAddress(TEXT_BOX_PERMANENT_ADDRESS)
+                .submit()
+                .checkOutputIsNotVisible()
+                .checkEmailHasErrorClass(FIELD_ERROR_CLASS);
     }
 }

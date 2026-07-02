@@ -1,168 +1,111 @@
 package tests;
 
 import org.junit.jupiter.api.Test;
+import pages.RegistrationPage;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
 import static testdata.TestData.*;
 
 public class RegistrationTests extends TestBase {
 
+    RegistrationPage registrationPage = new RegistrationPage();
+
     @Test
     void successfulFullFillFormTest() {
-        open(PRACTICE_FORM_URL);
-
-        $("[id=firstName]").setValue(REG_FIRST_NAME);
-        $("[id=lastName]").setValue(REG_LAST_NAME);
-        $("[id=userEmail]").setValue(REG_EMAIL);
-        $("[id=userNumber]").setValue(REG_MOBILE);
-
-        $("#genterWrapper").$(byText(REG_MALE_GENDER)).click();
-
-        $("[id=dateOfBirthInput]").click();
-        $(".react-datepicker__month-select").selectOption(REG_BIRTH_MONTH);
-        $(".react-datepicker__year-select").selectOption(REG_BIRTH_YEAR);
-        $(".react-datepicker__day--0" + REG_BIRTH_DAY + ":not(.react-datepicker__day--outside-month)").click();
-
-        $("[id=subjectsInput]").setValue(REG_SUBJECT_INPUT);
-        $(".subjects-auto-complete__option").click();
-
-        $("#hobbiesWrapper").$(byText(REG_HOBBY_SPORTS)).click();
-        $("#hobbiesWrapper").$(byText(REG_HOBBY_READING)).click();
-        $("#hobbiesWrapper").$(byText(REG_HOBBY_MUSIC)).click();
-
-        $("[id=uploadPicture]").uploadFromClasspath(REG_PICTURE_NAME);
-
-        $("[id=currentAddress]").setValue(REG_CURRENT_ADDRESS);
-
-        $("[id=state]").click();
-        $$("[id^=react-select-3-option]").findBy(text(REG_STATE)).click();
-
-        $("[id=city]").click();
-        $$("[id^=react-select-4-option]").findBy(text(REG_CITY)).click();
-
-        $("[id=submit]").click();
-
-        $(".modal-title").shouldHave(text(SUCCESS_MODAL_TITLE));
-
-        $(".table-responsive").$(byText(STUDENT_NAME_LABEL)).parent()
-                .shouldHave(text(REG_FULL_NAME));
-        $(".table-responsive").$(byText(STUDENT_EMAIL_LABEL)).parent()
-                .shouldHave(text(REG_EMAIL));
-        $(".table-responsive").$(byText(GENDER_LABEL)).parent()
-                .shouldHave(text(REG_MALE_GENDER));
-        $(".table-responsive").$(byText(MOBILE_LABEL)).parent()
-                .shouldHave(text(REG_MOBILE));
-        $(".table-responsive").$(byText(DATE_OF_BIRTH_LABEL)).parent()
-                .shouldHave(text(REG_EXPECTED_BIRTH_DATE));
-        $(".table-responsive").$(byText(SUBJECTS_LABEL)).parent()
-                .shouldHave(text(REG_EXPECTED_SUBJECT));
-        $(".table-responsive").$(byText(HOBBIES_LABEL)).parent()
-                .shouldHave(text(REG_EXPECTED_HOBBIES));
-        $(".table-responsive").$(byText(PICTURE_LABEL)).parent()
-                .shouldHave(text(REG_PICTURE_NAME));
-        $(".table-responsive").$(byText(ADDRESS_LABEL)).parent()
-                .shouldHave(text(REG_CURRENT_ADDRESS));
-        $(".table-responsive").$(byText(STATE_AND_CITY_LABEL)).parent()
-                .shouldHave(text(REG_EXPECTED_STATE_AND_CITY));
+        registrationPage.openPage(PRACTICE_FORM_URL)
+                .setFirstName(REG_FIRST_NAME)
+                .setLastName(REG_LAST_NAME)
+                .setEmail(REG_EMAIL)
+                .setMobile(REG_MOBILE)
+                .setGender(REG_MALE_GENDER)
+                .setDateOfBirth(REG_BIRTH_DAY, REG_BIRTH_MONTH, REG_BIRTH_YEAR)
+                .setSubject(REG_SUBJECT_INPUT)
+                .setHobbies(REG_HOBBY_SPORTS, REG_HOBBY_READING, REG_HOBBY_MUSIC)
+                .uploadPicture(REG_PICTURE_NAME)
+                .setCurrentAddress(REG_CURRENT_ADDRESS)
+                .setState(REG_STATE)
+                .setCity(REG_CITY)
+                .submit()
+                .checkSuccessModalTitle(SUCCESS_MODAL_TITLE)
+                .checkResult(STUDENT_NAME_LABEL, REG_FULL_NAME)
+                .checkResult(STUDENT_EMAIL_LABEL, REG_EMAIL)
+                .checkResult(GENDER_LABEL, REG_MALE_GENDER)
+                .checkResult(MOBILE_LABEL, REG_MOBILE)
+                .checkResult(DATE_OF_BIRTH_LABEL, REG_EXPECTED_BIRTH_DATE)
+                .checkResult(SUBJECTS_LABEL, REG_EXPECTED_SUBJECT)
+                .checkResult(HOBBIES_LABEL, REG_EXPECTED_HOBBIES)
+                .checkResult(PICTURE_LABEL, REG_PICTURE_NAME)
+                .checkResult(ADDRESS_LABEL, REG_CURRENT_ADDRESS)
+                .checkResult(STATE_AND_CITY_LABEL, REG_EXPECTED_STATE_AND_CITY);
     }
 
     @Test
     void successfulRequiredFillFormTest() {
-        open(PRACTICE_FORM_URL);
-
-        $("[id=firstName]").setValue(REG_FIRST_NAME);
-        $("[id=lastName]").setValue(REG_LAST_NAME);
-        $("[id=userNumber]").setValue(REG_REQUIRED_MOBILE);
-
-        $("#genterWrapper").$(byText(REG_FEMALE_GENDER)).click();
-
-        $("[id=submit]").click();
-
-        $(".modal-title").shouldHave(text(SUCCESS_MODAL_TITLE));
-        $(".table-responsive").$(byText(STUDENT_NAME_LABEL)).parent()
-                .shouldHave(text(REG_FULL_NAME));
-        $(".table-responsive").$(byText(GENDER_LABEL)).parent()
-                .shouldHave(text(REG_FEMALE_GENDER));
-        $(".table-responsive").$(byText(MOBILE_LABEL)).parent()
-                .shouldHave(text(REG_REQUIRED_MOBILE));
-        $(".table-responsive").$(byText(DATE_OF_BIRTH_LABEL)).parent()
-                .shouldHave(text(REG_EXPECTED_DEFAULT_BIRTH_DATE));
+        registrationPage.openPage(PRACTICE_FORM_URL)
+                .setFirstName(REG_FIRST_NAME)
+                .setLastName(REG_LAST_NAME)
+                .setMobile(REG_REQUIRED_MOBILE)
+                .setGender(REG_FEMALE_GENDER)
+                .submit()
+                .checkSuccessModalTitle(SUCCESS_MODAL_TITLE)
+                .checkResult(STUDENT_NAME_LABEL, REG_FULL_NAME)
+                .checkResult(GENDER_LABEL, REG_FEMALE_GENDER)
+                .checkResult(MOBILE_LABEL, REG_REQUIRED_MOBILE)
+                .checkResult(DATE_OF_BIRTH_LABEL, REG_EXPECTED_DEFAULT_BIRTH_DATE);
     }
 
     @Test
     void invalidSubmitWithEmptyFormTest() {
-        open(PRACTICE_FORM_URL);
-
-        $("[id=submit]").click();
-
-        $(".modal-body").shouldNot(exist);
-        $("[id=firstName]").shouldHave(cssValue("border-color", ERROR_BORDER_COLOR));
-        $("[id=lastName]").shouldHave(cssValue("border-color", ERROR_BORDER_COLOR));
-        $("[id=userNumber]").shouldHave(cssValue("border-color", ERROR_BORDER_COLOR));
+        registrationPage.openPage(PRACTICE_FORM_URL)
+                .submit()
+                .checkModalIsNotVisible()
+                .checkFirstNameValidationColor(ERROR_BORDER_COLOR)
+                .checkLastNameValidationColor(ERROR_BORDER_COLOR)
+                .checkMobileValidationColor(ERROR_BORDER_COLOR);
     }
 
     @Test
     void invalidSubmitWithoutFirstNameTest() {
-        open(PRACTICE_FORM_URL);
-
-        $("[id=lastName]").setValue(REG_LAST_NAME);
-        $("[id=userNumber]").setValue(REG_MOBILE);
-        $("#genterWrapper").$(byText(REG_MALE_GENDER)).click();
-
-        $("[id=submit]").click();
-
-        $(".modal-body").shouldNot(exist);
-        $("[id=firstName]").shouldHave(cssValue("border-color", ERROR_BORDER_COLOR));
+        registrationPage.openPage(PRACTICE_FORM_URL)
+                .setLastName(REG_LAST_NAME)
+                .setMobile(REG_MOBILE)
+                .setGender(REG_MALE_GENDER)
+                .submit()
+                .checkModalIsNotVisible()
+                .checkFirstNameValidationColor(ERROR_BORDER_COLOR);
     }
 
     @Test
     void invalidSubmitWithoutLastNameTest() {
-        open(PRACTICE_FORM_URL);
-
-        $("[id=firstName]").setValue(REG_FIRST_NAME);
-        $("[id=userNumber]").setValue(REG_MOBILE);
-        $("#genterWrapper").$(byText(REG_MALE_GENDER)).click();
-
-        $("[id=submit]").click();
-
-        $(".modal-body").shouldNot(exist);
-        $("[id=lastName]").shouldHave(cssValue("border-color", ERROR_BORDER_COLOR));
+        registrationPage.openPage(PRACTICE_FORM_URL)
+                .setFirstName(REG_FIRST_NAME)
+                .setMobile(REG_MOBILE)
+                .setGender(REG_MALE_GENDER)
+                .submit()
+                .checkModalIsNotVisible()
+                .checkLastNameValidationColor(ERROR_BORDER_COLOR);
     }
 
     @Test
     void invalidSubmitWithoutGenderTest() {
-        open(PRACTICE_FORM_URL);
-
-        $("[id=firstName]").setValue(REG_FIRST_NAME);
-        $("[id=lastName]").setValue(REG_LAST_NAME);
-        $("[id=userNumber]").setValue(REG_MOBILE);
-
-        $("[id=submit]").click();
-
-        $(".modal-body").shouldNot(exist);
-        $("#genterWrapper").$(byText(REG_MALE_GENDER))
-                .shouldHave(cssValue("color", ERROR_GENDER_COLOR));
-        $("#genterWrapper").$(byText(REG_FEMALE_GENDER))
-                .shouldHave(cssValue("color", ERROR_GENDER_COLOR));
-        $("#genterWrapper").$(byText(REG_OTHER_GENDER))
-                .shouldHave(cssValue("color", ERROR_GENDER_COLOR));
+        registrationPage.openPage(PRACTICE_FORM_URL)
+                .setFirstName(REG_FIRST_NAME)
+                .setLastName(REG_LAST_NAME)
+                .setMobile(REG_MOBILE)
+                .submit()
+                .checkModalIsNotVisible()
+                .checkGenderValidationColor(ERROR_GENDER_COLOR, REG_MALE_GENDER, REG_FEMALE_GENDER, REG_OTHER_GENDER);
     }
 
     @Test
     void invalidSubmitWithInvalidEmailTest() {
-        open(PRACTICE_FORM_URL);
-
-        $("[id=firstName]").setValue(REG_FIRST_NAME);
-        $("[id=lastName]").setValue(REG_LAST_NAME);
-        $("[id=userEmail]").setValue(REG_INVALID_EMAIL);
-        $("[id=userNumber]").setValue(REG_MOBILE);
-        $("#genterWrapper").$(byText(REG_MALE_GENDER)).click();
-
-        $("[id=submit]").click();
-
-        $(".modal-body").shouldNot(exist);
-        $("[id=userEmail]").shouldHave(cssValue("border-color", ERROR_BORDER_COLOR));
+        registrationPage.openPage(PRACTICE_FORM_URL)
+                .setFirstName(REG_FIRST_NAME)
+                .setLastName(REG_LAST_NAME)
+                .setEmail(REG_INVALID_EMAIL)
+                .setMobile(REG_MOBILE)
+                .setGender(REG_MALE_GENDER)
+                .submit()
+                .checkModalIsNotVisible()
+                .checkEmailValidationColor(ERROR_BORDER_COLOR);
     }
 }
