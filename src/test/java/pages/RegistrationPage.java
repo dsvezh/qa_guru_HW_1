@@ -1,12 +1,18 @@
 package pages;
 
 import com.codeborne.selenide.SelenideElement;
+import pages.components.CalendarComponent;
+import pages.components.ResultsModalComponent;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.cssValue;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class RegistrationPage {
+
+    private final CalendarComponent calendarComponent = new CalendarComponent();
+    private final ResultsModalComponent resultsModalComponent = new ResultsModalComponent();
 
     private final SelenideElement firstNameInput = $("[id=firstName]");
     private final SelenideElement lastNameInput = $("[id=lastName]");
@@ -14,8 +20,6 @@ public class RegistrationPage {
     private final SelenideElement mobileInput = $("[id=userNumber]");
     private final SelenideElement genderWrapper = $("#genterWrapper");
     private final SelenideElement dateOfBirthInput = $("[id=dateOfBirthInput]");
-    private final SelenideElement monthSelect = $(".react-datepicker__month-select");
-    private final SelenideElement yearSelect = $(".react-datepicker__year-select");
     private final SelenideElement subjectsInput = $("[id=subjectsInput]");
     private final SelenideElement subjectOption = $(".subjects-auto-complete__option");
     private final SelenideElement hobbiesWrapper = $("#hobbiesWrapper");
@@ -24,9 +28,6 @@ public class RegistrationPage {
     private final SelenideElement stateInput = $("[id=state]");
     private final SelenideElement cityInput = $("[id=city]");
     private final SelenideElement submitButton = $("[id=submit]");
-    private final SelenideElement modalTitle = $(".modal-title");
-    private final SelenideElement modalBody = $(".modal-body");
-    private final SelenideElement resultsTable = $(".table-responsive");
 
     public RegistrationPage openPage(String url) {
         open(url);
@@ -60,9 +61,7 @@ public class RegistrationPage {
 
     public RegistrationPage setDateOfBirth(String day, String month, String year) {
         dateOfBirthInput.click();
-        monthSelect.selectOption(month);
-        yearSelect.selectOption(year);
-        $(".react-datepicker__day--0" + day + ":not(.react-datepicker__day--outside-month)").click();
+        calendarComponent.setDate(day, month, year);
         return this;
     }
 
@@ -107,17 +106,17 @@ public class RegistrationPage {
     }
 
     public RegistrationPage checkSuccessModalTitle(String title) {
-        modalTitle.shouldHave(text(title));
+        resultsModalComponent.checkTitle(title);
         return this;
     }
 
     public RegistrationPage checkResult(String label, String value) {
-        resultsTable.$(byText(label)).parent().shouldHave(text(value));
+        resultsModalComponent.checkResult(label, value);
         return this;
     }
 
     public RegistrationPage checkModalIsNotVisible() {
-        modalBody.shouldNot(exist);
+        resultsModalComponent.checkIsNotVisible();
         return this;
     }
 
