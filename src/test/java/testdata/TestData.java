@@ -1,7 +1,11 @@
 package testdata;
 
+import com.github.javafaker.Faker;
+
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Locale;
 
 public class TestData {
@@ -25,38 +29,71 @@ public class TestData {
     public static final String ADDRESS_LABEL = "Address";
     public static final String STATE_AND_CITY_LABEL = "State and City";
 
-    public static final String REG_FIRST_NAME = "Harry";
-    public static final String REG_LAST_NAME = "Potter";
-    public static final String REG_FULL_NAME = REG_FIRST_NAME + " " + REG_LAST_NAME;
-    public static final String REG_EMAIL = "og@potter.com";
-    public static final String REG_INVALID_EMAIL = "not-an-email";
-    public static final String REG_MOBILE = "8800555353";
-    public static final String REG_REQUIRED_MOBILE = "8005553535";
     public static final String REG_MALE_GENDER = "Male";
     public static final String REG_FEMALE_GENDER = "Female";
     public static final String REG_OTHER_GENDER = "Other";
-    public static final String REG_BIRTH_DAY = "01";
-    public static final String REG_BIRTH_MONTH = "January";
-    public static final String REG_BIRTH_YEAR = "2000";
-    public static final String REG_EXPECTED_BIRTH_DATE = REG_BIRTH_DAY + " January,2000";
-    public static final String REG_EXPECTED_DEFAULT_BIRTH_DATE =
-            LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM,yyyy", Locale.ENGLISH));
-    public static final String REG_SUBJECT_INPUT = "Math";
-    public static final String REG_EXPECTED_SUBJECT = "Maths";
-    public static final String REG_HOBBY_SPORTS = "Sports";
-    public static final String REG_HOBBY_READING = "Reading";
-    public static final String REG_HOBBY_MUSIC = "Music";
-    public static final String REG_EXPECTED_HOBBIES = "Sports, Reading, Music";
     public static final String REG_PICTURE_NAME = "CatHarry.jpg";
-    public static final String REG_CURRENT_ADDRESS = "221B Baker Street";
-    public static final String REG_STATE = "NCR";
-    public static final String REG_CITY = "Delhi";
-    public static final String REG_EXPECTED_STATE_AND_CITY = REG_STATE + " " + REG_CITY;
 
-    public static final String TEXT_BOX_FULL_NAME = "Ivanov Ivan Ivanovich";
-    public static final String TEXT_BOX_EMAIL = "og@vanya.ru";
-    public static final String TEXT_BOX_INVALID_EMAIL = "og-vanya.ru";
-    public static final String TEXT_BOX_INVALID_EMAIL_WITH_SPACES = "og @vanya.ru";
-    public static final String TEXT_BOX_CURRENT_ADDRESS = "35 Marshal Rybalko Street, Perm, Russia";
-    public static final String TEXT_BOX_PERMANENT_ADDRESS = "27 Lenin Street, Moscow, Russia";
+    private final Faker faker = new Faker(Locale.ENGLISH);
+    private final Date birthDate = faker.date().birthday(18, 70);
+
+    public final String regFirstName = faker.name().firstName();
+    public final String regLastName = faker.name().lastName();
+    public final String regFullName = regFirstName + " " + regLastName;
+    public final String regEmail = faker.internet().emailAddress();
+    public final String regInvalidEmail = faker.name().username() + "-invalid-email";
+    public final String regMobile = faker.numerify("##########");
+    public final String regGender = getRandomGender();
+    public final String regBirthDay = formatBirthDate("dd");
+    public final String regBirthMonth = formatBirthDate("MMMM");
+    public final String regBirthYear = formatBirthDate("yyyy");
+    public final String regExpectedBirthDate = regBirthDay + " " + regBirthMonth + "," + regBirthYear;
+    public final String regExpectedDefaultBirthDate =
+            LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM,yyyy", Locale.ENGLISH));
+    public final String regSubject = getRandomSubject();
+    public final String regHobby = getRandomHobby();
+    public final String regCurrentAddress = faker.address().streetAddress();
+    public final String regState = getRandomState();
+    public final String regCity = getRandomCity(regState);
+    public final String regExpectedStateAndCity = regState + " " + regCity;
+
+    public final String textBoxFullName = faker.name().fullName();
+    public final String textBoxEmail = faker.internet().emailAddress();
+    public final String textBoxInvalidEmail = faker.name().username() + "-invalid-email";
+    public final String textBoxInvalidEmailWithSpaces = faker.name().username() + " @example.com";
+    public final String textBoxCurrentAddress = faker.address().streetAddress();
+    public final String textBoxPermanentAddress = faker.address().streetAddress();
+
+    private String formatBirthDate(String pattern) {
+        return new SimpleDateFormat(pattern, Locale.ENGLISH).format(birthDate);
+    }
+
+    public String getRandomGender() {
+        return faker.options().option(REG_MALE_GENDER, REG_FEMALE_GENDER, REG_OTHER_GENDER);
+    }
+
+    public String getRandomSubject() {
+        return faker.options().option(
+                "Maths", "English", "Computer Science", "Chemistry", "Economics",
+                "Social Studies", "Physics", "Biology", "Arts", "History",
+                "Civics", "Commerce", "Hindi", "Accounting");
+    }
+
+    public String getRandomHobby() {
+        return faker.options().option("Sports", "Reading", "Music");
+    }
+
+    public String getRandomState() {
+        return faker.options().option("NCR", "Uttar Pradesh", "Haryana", "Rajasthan");
+    }
+
+    public String getRandomCity(String state) {
+        return switch (state) {
+            case "NCR" -> faker.options().option("Delhi", "Gurgaon", "Noida");
+            case "Uttar Pradesh" -> faker.options().option("Agra", "Lucknow", "Merrut");
+            case "Haryana" -> faker.options().option("Karnal", "Panipat");
+            case "Rajasthan" -> faker.options().option("Jaipur", "Jaiselmer");
+            default -> throw new IllegalArgumentException("Unknown state: " + state);
+        };
+    }
 }
