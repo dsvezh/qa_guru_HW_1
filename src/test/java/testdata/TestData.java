@@ -10,24 +10,10 @@ import java.util.Locale;
 
 public class TestData {
 
-    public static final String PRACTICE_FORM_URL = "/automation-practice-form";
-    public static final String TEXT_BOX_URL = "/text-box";
-
     public static final String SUCCESS_MODAL_TITLE = "Thanks for submitting the form";
     public static final String ERROR_BORDER_COLOR = "rgb(220, 53, 69)";
     public static final String ERROR_GENDER_COLOR = "rgba(220, 53, 69, 1)";
     public static final String FIELD_ERROR_CLASS = "field-error";
-
-    public static final String STUDENT_NAME_LABEL = "Student Name";
-    public static final String STUDENT_EMAIL_LABEL = "Student Email";
-    public static final String GENDER_LABEL = "Gender";
-    public static final String MOBILE_LABEL = "Mobile";
-    public static final String DATE_OF_BIRTH_LABEL = "Date of Birth";
-    public static final String SUBJECTS_LABEL = "Subjects";
-    public static final String HOBBIES_LABEL = "Hobbies";
-    public static final String PICTURE_LABEL = "Picture";
-    public static final String ADDRESS_LABEL = "Address";
-    public static final String STATE_AND_CITY_LABEL = "State and City";
 
     public static final String REG_MALE_GENDER = "Male";
     public static final String REG_FEMALE_GENDER = "Female";

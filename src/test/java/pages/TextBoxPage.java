@@ -7,6 +7,8 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class TextBoxPage {
 
+    private static final String PATH = "/text-box";
+
     private final SelenideElement fullNameInput = $("#userName");
     private final SelenideElement emailInput = $("#userEmail");
     private final SelenideElement currentAddressInput = $("#currentAddress");
@@ -18,8 +20,8 @@ public class TextBoxPage {
     private final SelenideElement outputCurrentAddress = $("#output #currentAddress");
     private final SelenideElement outputPermanentAddress = $("#output #permanentAddress");
 
-    public TextBoxPage openPage(String url) {
-        open(url);
+    public TextBoxPage openPage() {
+        open(PATH);
         return this;
     }
 

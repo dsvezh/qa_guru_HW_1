@@ -12,6 +12,8 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class RegistrationPage {
 
+    private static final String PATH = "/automation-practice-form";
+
     private final CalendarComponent calendarComponent = new CalendarComponent();
     private final ResultsModalComponent resultsModalComponent = new ResultsModalComponent();
 
@@ -32,8 +34,8 @@ public class RegistrationPage {
     private final ElementsCollection stateOptions = $$("[id^=react-select-3-option]");
     private final ElementsCollection cityOptions = $$("[id^=react-select-4-option]");
 
-    public RegistrationPage openPage(String url) {
-        open(url);
+    public RegistrationPage openPage() {
+        open(PATH);
         return this;
     }
 

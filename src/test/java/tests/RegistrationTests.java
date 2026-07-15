@@ -13,7 +13,7 @@ public class RegistrationTests extends TestBase {
 
     @Test
     void successfulFullFillFormTest() {
-        registrationPage.openPage(PRACTICE_FORM_URL)
+        registrationPage.openPage()
                 .setFirstName(testData.regFirstName)
                 .setLastName(testData.regLastName)
                 .setEmail(testData.regEmail)
@@ -28,36 +28,36 @@ public class RegistrationTests extends TestBase {
                 .setCity(testData.regCity)
                 .submit()
                 .checkSuccessModalTitle(SUCCESS_MODAL_TITLE)
-                .checkResult(STUDENT_NAME_LABEL, testData.regFullName)
-                .checkResult(STUDENT_EMAIL_LABEL, testData.regEmail)
-                .checkResult(GENDER_LABEL, testData.regGender)
-                .checkResult(MOBILE_LABEL, testData.regMobile)
-                .checkResult(DATE_OF_BIRTH_LABEL, testData.regExpectedBirthDate)
-                .checkResult(SUBJECTS_LABEL, testData.regSubject)
-                .checkResult(HOBBIES_LABEL, testData.regHobby)
-                .checkResult(PICTURE_LABEL, REG_PICTURE_NAME)
-                .checkResult(ADDRESS_LABEL, testData.regCurrentAddress)
-                .checkResult(STATE_AND_CITY_LABEL, testData.regExpectedStateAndCity);
+                .checkResult("Student Name", testData.regFullName)
+                .checkResult("Student Email", testData.regEmail)
+                .checkResult("Gender", testData.regGender)
+                .checkResult("Mobile", testData.regMobile)
+                .checkResult("Date of Birth", testData.regExpectedBirthDate)
+                .checkResult("Subjects", testData.regSubject)
+                .checkResult("Hobbies", testData.regHobby)
+                .checkResult("Picture", REG_PICTURE_NAME)
+                .checkResult("Address", testData.regCurrentAddress)
+                .checkResult("State and City", testData.regExpectedStateAndCity);
     }
 
     @Test
     void successfulRequiredFillFormTest() {
-        registrationPage.openPage(PRACTICE_FORM_URL)
+        registrationPage.openPage()
                 .setFirstName(testData.regFirstName)
                 .setLastName(testData.regLastName)
                 .setMobile(testData.regMobile)
                 .setGender(testData.regGender)
                 .submit()
                 .checkSuccessModalTitle(SUCCESS_MODAL_TITLE)
-                .checkResult(STUDENT_NAME_LABEL, testData.regFullName)
-                .checkResult(GENDER_LABEL, testData.regGender)
-                .checkResult(MOBILE_LABEL, testData.regMobile)
-                .checkResult(DATE_OF_BIRTH_LABEL, testData.regExpectedDefaultBirthDate);
+                .checkResult("Student Name", testData.regFullName)
+                .checkResult("Gender", testData.regGender)
+                .checkResult("Mobile", testData.regMobile)
+                .checkResult("Date of Birth", testData.regExpectedDefaultBirthDate);
     }
 
     @Test
     void invalidSubmitWithEmptyFormTest() {
-        registrationPage.openPage(PRACTICE_FORM_URL)
+        registrationPage.openPage()
                 .submit()
                 .checkModalIsNotVisible()
                 .checkFirstNameValidationColor(ERROR_BORDER_COLOR)
@@ -67,7 +67,7 @@ public class RegistrationTests extends TestBase {
 
     @Test
     void invalidSubmitWithoutFirstNameTest() {
-        registrationPage.openPage(PRACTICE_FORM_URL)
+        registrationPage.openPage()
                 .setLastName(testData.regLastName)
                 .setMobile(testData.regMobile)
                 .setGender(testData.regGender)
@@ -78,7 +78,7 @@ public class RegistrationTests extends TestBase {
 
     @Test
     void invalidSubmitWithoutLastNameTest() {
-        registrationPage.openPage(PRACTICE_FORM_URL)
+        registrationPage.openPage()
                 .setFirstName(testData.regFirstName)
                 .setMobile(testData.regMobile)
                 .setGender(testData.regGender)
@@ -89,7 +89,7 @@ public class RegistrationTests extends TestBase {
 
     @Test
     void invalidSubmitWithoutGenderTest() {
-        registrationPage.openPage(PRACTICE_FORM_URL)
+        registrationPage.openPage()
                 .setFirstName(testData.regFirstName)
                 .setLastName(testData.regLastName)
                 .setMobile(testData.regMobile)
@@ -100,7 +100,7 @@ public class RegistrationTests extends TestBase {
 
     @Test
     void invalidSubmitWithInvalidEmailTest() {
-        registrationPage.openPage(PRACTICE_FORM_URL)
+        registrationPage.openPage()
                 .setFirstName(testData.regFirstName)
                 .setLastName(testData.regLastName)
                 .setEmail(testData.regInvalidEmail)

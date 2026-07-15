@@ -13,7 +13,7 @@ public class SimpleRegistrationForm extends TestBase {
 
     @Test
     void successfulFullFillFormTest() {
-        textBoxPage.openPage(TEXT_BOX_URL)
+        textBoxPage.openPage()
                 .setFullName(testData.textBoxFullName)
                 .setEmail(testData.textBoxEmail)
                 .setCurrentAddress(testData.textBoxCurrentAddress)
@@ -27,7 +27,7 @@ public class SimpleRegistrationForm extends TestBase {
 
     @Test
     void invalidEmailTest() {
-        textBoxPage.openPage(TEXT_BOX_URL)
+        textBoxPage.openPage()
                 .setFullName(testData.textBoxFullName)
                 .setEmail(testData.textBoxInvalidEmail)
                 .setCurrentAddress(testData.textBoxCurrentAddress)
@@ -39,7 +39,7 @@ public class SimpleRegistrationForm extends TestBase {
 
     @Test
     void invalidEmailWithSpacesTest() {
-        textBoxPage.openPage(TEXT_BOX_URL)
+        textBoxPage.openPage()
                 .setFullName(testData.textBoxFullName)
                 .setEmail(testData.textBoxInvalidEmailWithSpaces)
                 .setCurrentAddress(testData.textBoxCurrentAddress)
